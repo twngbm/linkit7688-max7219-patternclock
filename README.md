@@ -2,17 +2,17 @@
 
   ## Introduction
 
-    This is a pattern clock project for **MEDIATEK Linkit 7688 duo** and four MAX7219.
+  This is a pattern clock project for **MEDIATEK Linkit 7688 duo** and four MAX7219.
 
-    It can read a specificy format of .json named as Schedule.json and turn into pattern show on specificy MAX7219.
+  It can read a specificy format of .json named as Schedule.json and turn into pattern show on specificy MAX7219.
 
-    Current support five events: **Medicine, Exercise, Wakeup, Hand, Eat.**
+  Current support five events: **Medicine, Exercise, Wakeup, Hand, Eat.**
 
   For example:
 
-    You can set up events **Medicine** and **Eat** at 18:00, The two patterns will show up at first MAX7219 from 17:00 to 18:00 in turn.
+  You can set up events **Medicine** and **Eat** at 18:00, The two patterns will show up at first MAX7219 from 17:00 to 18:00 in turn.
 
-    A event which contain **Exercise** and **Hand** at 18:15 will draw the patterns to the second MAX7219 from 17:15 to 18:15 in turn.
+  A event which contain **Exercise** and **Hand** at 18:15 will draw the patterns to the second MAX7219 from 17:15 to 18:15 in turn.
 
   This project is just a practice of Linkit7688 duo and max7219, any suggest and criticism are welcone.
 
