@@ -14,7 +14,7 @@
 
   A event which contain **Exercise** and **Hand** at 18:15 will draw the patterns to the second MAX7219 from 17:15 to 18:15 in turn.
 
-  This project is just a practice of Linkit7688 duo and max7219, any suggest and criticism are welcone.
+  This project is just a practice of Linkit7688 duo and max7219, any suggestions are welcome.
 
 ## Source Tree
 
