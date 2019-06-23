@@ -105,7 +105,7 @@ python shell script are called.
 
   2. Open a exist **Schedule.json**  to edit or just start adding event.
 
-  3. After finishing editing, click "Save" to save file, if a empty table are saved, a empty item will be automatically generate at time 
+  3. After finishing editing, click "Save" to save file, if an empty table is saved, an empty item will be automatically generate at time 
 1:00 with empty event.
 ```
 {"0":{"hour":1,"minute":0,"events":"11000200000"}}
