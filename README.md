@@ -44,9 +44,13 @@ Python 2.7 : **main.py**
 
 Python 3.6 or up: **gui.py**, **main_emu.py**
 
-PyQt5 : **gui.py**
+[PyQt5](https://pypi.org/project/PyQt5/) and [pyinstaller](https://www.pyinstaller.org/)(recommend) : **gui.py**
+
+Both can be installed by pip
 
 Arduino IDE: **sketch_main/sketch_main.ino**
+
+
 
 **MEDIATEK Linkit 7688 duo require a network connection everytime it bootup to adjust OS time by ntpd.**
 
@@ -115,3 +119,17 @@ python shell script are called.
 6. After plug out the USB device, Linkit 7688 will go into a reboot.
 
 7. From plug out to new schedule pattern to take effect will take about 100 seconds.
+
+### Generate gui.exe
+
+After modifying the gui.py and if you want to create a executable file without the dependence of the python enviromen,you can use pyinstaller to pack the python script to a stand alone executable file.
+
+1. [Install pyinstaller](https://www.pyinstaller.org/)
+
+2. type the flowing command, -F means single file and -w means windows application
+
+```
+pyinstaller -F -w --icon=icon.ico gui.py
+```
+
+3. After the buildup finished, the exe file will be place at /dist/gui.exe
