@@ -36,6 +36,7 @@ def setup():
     # Other wise output message to STDOUT
     
     s = serial.Serial("/dev/ttyS0", 57600)
+    s.write("0000")
     
 
     # Read file from .json
@@ -138,7 +139,7 @@ def loop(flag):
     s_message = str(message[0])+str(message[1])+str(message[2])+str(message[3])
     
     # Write message to serial port.
-    s.write((s_message+"\n"))
+    s.write((s_message))
     print(s_message)
 
 
@@ -151,7 +152,7 @@ if __name__ == '__main__':
     cou=0
     while True:
         loop(flag)
-	if cou==0:
-	    os.system("ntpd -q -p ptbtime1.ptb.de")
+    if cou==0:
+        os.system("ntpd -q -p ptbtime1.ptb.de")
         cou+=1
         cou%=120

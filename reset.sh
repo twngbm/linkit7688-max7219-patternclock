@@ -8,10 +8,7 @@ do
   if [ $retval -eq 0 ] ; then
     cp /Media/USB-A1/Schedule.json /root/
     sleep 1
-    pgrep python
-    pid=$?
-    echo $pid
-    kill $pid
+    pgrep python | xargs kill
     while true
     do
       ls /Media/USB-A1
@@ -21,8 +18,7 @@ do
         break
       fi
     done
-    reboot
-    break
+    python /root/main.py &
   else
     sleep 1
   fi

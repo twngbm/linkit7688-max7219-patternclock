@@ -6,7 +6,7 @@ import sys
 class ui(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.events_name = ["Medicine", "Exercise", "Wake Up", "Hand", "Eat"]
+        self.events_name = ["Medicine", "Exercise", "Turn Over", "Chest Care", "Food"]
         self.do_layout()
         self.but_open.clicked.connect(self.openfile)
         self.but_add.clicked.connect(self.additem)
@@ -81,7 +81,7 @@ class ui(QtWidgets.QWidget):
         for idx, key in enumerate(self.data):
             if hour_chosen == self.data[key]["hour"] and minute_chosen*15 == self.data[key]["minute"]:
                 self.do_pop_up(
-                    "Insert time already exist in current schedul,please remove pervious one")
+                    "Insert time already exist in current schedul,please remove old one.")
                 return
         name_counter = 0
         key_list = [key for key in self.data]
@@ -185,10 +185,11 @@ class ui(QtWidgets.QWidget):
             self.data = {"0": {"hour": 1, "minute": 0, "events": 11000200000}}
         self.do_output(name)
         self.do_pop_up(
-            "    File output susscessfully into the Folder.  Please do the following step to update the schedule:\n\
+            "    File output susscessfully into the Folder.  Please do the following steps to update the new schedule:\n\
             1. Put Schedule.json into USB device.\n\
             2. Plug the USB device to the clock.\n\
-            3. Wait for the clock to reboot.", "Information")
+            3. Wait at least 10 seconds, then plug out the USB device.\n\
+            4. Wait for the clock to reset.", "Information")
 
     def additem(self):
         try:
@@ -240,9 +241,9 @@ WARNING:THIS CAN NOT BE UNDO!")
         self.chkbx_exercise.setFont(self.format)
         self.chkbx_wake = QtWidgets.QCheckBox("Turn Over")
         self.chkbx_wake.setFont(self.format)
-        self.chkbx_hand = QtWidgets.QCheckBox("Hand")
+        self.chkbx_hand = QtWidgets.QCheckBox("Chest Care")
         self.chkbx_hand.setFont(self.format)
-        self.chkbx_eat = QtWidgets.QCheckBox("Eat")
+        self.chkbx_eat = QtWidgets.QCheckBox("Food")
         self.chkbx_eat.setFont(self.format)
         self.combo_hour = QtWidgets.QComboBox()
         self.combo_hour.addItems(hour)

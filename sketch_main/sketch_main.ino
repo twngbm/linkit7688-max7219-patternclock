@@ -34,7 +34,7 @@ const byte pattern_wakeup[8] = { //wakeup
   B00111100, B01000010, B10000001, B00000001, B11100001, B11000001, B10100010, B00011100
 };
 const byte pattern_hand[8] = { //hand
-  B00111000, B01100000, B11111110, B11110000, B11111111, B11110000, B01111100, B00000000
+  B00100110, B01001000, B11110000, B11111111, B11110000, B11111000, B00100110, B00011000
 };
 const byte pattern_eat[8] = { //eat
   B00000000, B00001100, B11111100, B11111100, B11111111, B11111101, B00001101, B00000000
@@ -96,7 +96,10 @@ void init_max7219()
   clear_matrix();                                          // clear matrix display
 }
 
-
+char buf[4] = {};
+int command = 0;
+int i = 0;
+int idx=0;
 void setup() {
   // init pin states
   Serial.begin(115200); //USB com port
@@ -107,64 +110,84 @@ void setup() {
   pinMode(13, OUTPUT); //Use for debug
   // init MAX7219 states
   init_max7219();
+  set_all_registers(MAX7219_SHUTDOWN_REG, OFF);
+
 }
 
 /*
- * Received data format
- * "0000"~"5555"
- * "0 0 0 0"
- *  ^
- *  |
- *  1. position means which MAX7219 should be set.
- *  
- *  2. number means which event_pattern should be drown on.
- *  
- *  EX:
- *  "0241" means:
- *  First MAX7219 should draw event Null
- *  second MAX7219 should draw event exercise 
- *  third MAX7219 should draw event hand
- *  fourth MAX7219 should draw event medicine
- *  
+   Received data format
+   "0000"~"5555"
+   "0 0 0 0"
+    ^
+    |
+    1. position means which MAX7219 should be set.
+
+    2. number means which event_pattern should be drown on.
+
+    EX:
+    "0241" means:
+    First MAX7219 should draw event Null
+    second MAX7219 should draw event exercise
+    third MAX7219 should draw event hand
+    fourth MAX7219 should draw event medicine
+
 */
 void loop() {
-  
-  byte buf[4] = {};
-  int command = 0;
-  char pattern[8] = {};
   command = Serial1.readBytes(buf, 4);
-
   if (command == 4 ) {
-    set_all_registers(MAX7219_SHUTDOWN_REG, OFF);
+    //set_all_registers(MAX7219_SHUTDOWN_REG, OFF);
     Serial.print(char(buf[0]));
     Serial.print(char(buf[1]));
     Serial.print(char(buf[2]));
     Serial.println(char(buf[3]));
-    for (int idx = 0; idx < 4; idx++) {
+    if (buf[0] == '0' && buf[1] == '0' && buf[2] == '0' && buf[3] == '0') {
+      Serial.println("Off");
+      set_all_registers(MAX7219_SHUTDOWN_REG, OFF);
+      return;
+    }
+    for (idx = 0; idx < 4; idx++) {
       switch (buf[idx]) {
         case '0':
-          memcpy(pattern,pattern_null,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_null[i]);
+          }
           break;
         case '1':
-          memcpy(pattern,pattern_medicine,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_medicine[i]);
+          }
           break;
         case '2':
-          memcpy(pattern,pattern_exercise,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_exercise[i]);
+          }
           break;
         case '3':
-          memcpy(pattern,pattern_wakeup,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_wakeup[i]);
+          }
           break;
         case '4':
-          memcpy(pattern,pattern_hand,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_hand[i]);
+          }
           break;
         case '5':
-          memcpy(pattern,pattern_eat,8);
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_eat[i]);
+          }
           break;
+        default:
+          for (i = 0; i < BYTE_PER_MAP; i++) {
+            set_single_register(idx, MAX7219_COLUMN_REG(i), pattern_null[i]);
+          }
       }
-      for (int i=0; i < BYTE_PER_MAP; i++){
-        set_single_register(idx, MAX7219_COLUMN_REG(i), pattern[i]);
-        }
     }
+    command = 0;
+    buf[0] = '0';
+    buf[1] = '0';
+    buf[2] = '0';
+    buf[3] = '0';
     set_all_registers(MAX7219_SHUTDOWN_REG, ON);
   }
 }

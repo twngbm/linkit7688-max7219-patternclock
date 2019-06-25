@@ -36,12 +36,12 @@ def setup():
     # Other wise output message to STDOUT
     
     #s = serial.Serial("/dev/ttyS0", 57600)
+    #s.write("0000")
     
 
     # Read file from .json
-    
-    with open("Schedule.json") as json_file:
-        data = json.loads(json_file.read())   
+    with open("/root/Schedule.json") as json_file:
+        data = json.loads(json_file.read())
     
     # Turn events bitmask into dictionary structure
     # alarm_dict = { str event_start_time : [ int index, str event_end_time, list [ int event_number ], int position ] }
@@ -139,21 +139,20 @@ def loop(flag):
     s_message = str(message[0])+str(message[1])+str(message[2])+str(message[3])
     
     # Write message to serial port.
-    #s.write((s_message+"\n"))
+    #s.write((s_message))
     print(s_message)
+
 
     time.sleep(2)
 
 
 if __name__ == '__main__':
+    os.system("ntpd -q -p ptbtime1.ptb.de")
     flag = setup()
     cou=0
     while True:
         loop(flag)
-        if cou==0:
-            try:
-                os.system("ntpd -q -p ptbtime1.ptb.de")
-            except:
-                print("ntpe fail")
+    if cou==0:
+        os.system("ntpd -q -p ptbtime1.ptb.de")
         cou+=1
         cou%=120
