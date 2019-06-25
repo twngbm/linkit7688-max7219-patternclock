@@ -152,7 +152,7 @@ if __name__ == '__main__':
     cou=0
     while True:
         loop(flag)
-    if cou==0:
-        os.system("ntpd -q -p ptbtime1.ptb.de")
-        cou+=1
-        cou%=120
+        if cou==0:
+            os.system("ntpd -q -p ptbtime1.ptb.de")
+            cou+=1
+            cou%=120

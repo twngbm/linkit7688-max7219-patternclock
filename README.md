@@ -105,9 +105,52 @@ before exit 0, than Submit.
 
 4. Copy **Schedule.json** into a usb device with format **FAT32**. **File name** ***MUST be Schedule.json*** and ***MUST at the root folder***.
 
-5. **Make Sure that Linkit 7688 bootup is ready(By seeing the pattern start changing or just wait at least two minutes.)** Plug the usb device into Linkit 7688, after about 7~10 seconds, plug out the usb decice.(You can see the pattern stop changing, then you can plug out the USB device.)
+5. **Make Sure that Linkit 7688 bootup is ready(By seeing the pattern start changing or just wait at least two minutes.)** Plug the USB device into Linkit 7688, after about 7~10 seconds, plug out the usb decice.(You can see the pattern stop changing, then you can plug out the USB device.) The file have been automatically copy from USB to board at **/root/**
 
 6. After plug out the USB device, new schedule should take effect within a second.
+
+### Error Handling
+
+#### 1. Strange, Broken Pattern
+
+Reason: Unstable MAX7219 wire connection.
+Fix: Replug the MAX7219 wire, if the problem still exist, do a reboot.
+
+#### 2. Event wake up on wrong time; Event don;t wake up at the time set.
+
+##### Situtation 1: Serial output with right pattern, but MAX7219 doesn't work
+
+Reason: Unstable MAX7219 wire connection.
+
+Fix: Replug the MAX7219 wire, if the problem still exist, do a reboot.
+
+##### Situtation 2: Serial output wrong pattern.
+
+Reason might be:
+
+1. Old **Schedule.json** still on the board.
+
+2. System time is wrong.
+
+Fix: 
+
+1. You ***MUST*** wait at least ***2 minutes*** for system to boot up from **Cold boot**, means you boot the board up from plugin USB power cable, then system can properly handle USB plugin event. And make sure you'v wait until the file have been copy from USB to board by seeing pattern stop changing or wait for at least ***10 seconds***.
+
+2. This Board ***MUST*** work with WiFi connection to Internet, for board need to re-sync timeing with Internet since it didn't come with a battery. Above section **Linkit 7688 duo Install** Step 5 give **ntpd** server (time sync server) a 60 seconds windows to wait for WiFi connection ,and another 10 seconds windows for ntpd to take effect. Above command failed if no Wifi connection or WiFi connection establish after 60 seconds windows. Than **main.py** will get a wrong timing from system, and generate a wrong timing dictionary, futher cause the wrong pattern. Make Sure Linkit 7688 had setup and linked to a stable WiFi signal. And Make Sure to reconnect to new WiFi if the old one is unreachable.
+
+##### Situtation 3: I'v make sure that every step is correct, but file still can't automatically copy from USB to board.
+
+Reason might be:
+
+1. **reset.sh** didn't come up while board bootup.
+
+2. You plug the USB on the wrong port.
+
+Fix:
+
+1. To check if **reset.sh** come up while board bootup, you will need to **ssh** into board and check current running process with command **ps** or **top**. After the boot up finished (2 minutes) , you should be able to see a process with command **sleep 1** ,then **reset.sh** work fine. If you don't see one, this might be the **reset.sh** isn't **executable**. Make sure you had done Step 4 at **Linkit 7688 duo Install**.
+
+2. Linkit 7688 have two micro USB port, one for power supply and MCU control, and another for USB connection for Linux Kernel. In this case, you'll just neet to swap two cable to another port.
 
 ### Bootup Flow
 
